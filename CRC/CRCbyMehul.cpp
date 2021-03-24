@@ -32,7 +32,9 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
             for(int i = 0 ; i<sizeofKey ; i++)
             {
                 answer[i] = top[i] ^ bottom[i];
+				cout<<answer[i]<<"\t";
             }
+			cout<<endl;
 
             //MSB of answer is IGNORED. THEREFORE DONT CONSIDER 0th bit of answer[]
             //load the answer in top[]
@@ -41,13 +43,17 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
                 top[i] = answer[i+1]; //IGNORE 0th bit
             }
 
-            //Finally add next bit in last bit of top[]
-            top[sizeofKey] = pointer;
-            pointer++;
 
+			if(pointer == absoluteSize)
+				break;
+			
+
+            //Finally add next bit in last bit of top[]
+			top[sizeofKey-1] = dataArray[pointer];
+			pointer++;				
         }
 
-        if(top[0] == 0)
+        else if(top[0] == 0)
         {
             //If First Bit == 0, load all zeros
             for(int i = 0 ; i<sizeofKey ; i++)
@@ -59,7 +65,9 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
             for(int i = 0 ; i<sizeofKey ; i++)
             {
                 answer[i] = top[i] ^ bottom[i];
+				cout<<answer[i]<<"\t";
             }
+			cout<<endl;
 
             //MSB of answer is IGNORED. THEREFORE DONT CONSIDER 0th bit of answer[]
             //load the answer in top[]
@@ -68,35 +76,36 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
                 top[i] = answer[i+1]; //IGNORE 0th bit
             }
 
+
+			if(pointer == absoluteSize)
+				break;
+			
+
             //Finally add next bit in last bit of top[]
-            top[sizeofKey] = pointer;
-            pointer++;
+			top[sizeofKey-1] = dataArray[pointer];
+			pointer++;				
         }
-
-
-
-        //Printing Top
-        cout<<"JUST PRINTING"<<endl;
-        for(int i = 0 ; i<sizeofKey ; i++)
-        {
-            cout<<top[i]<<"\t";
-        }
-        cout<<endl;
-
-
-
-        //Terminating condition
-        if(answer[1] == 1 && answer[2] == 0 && answer[34] == 1)
-        {
-            cout<<"ENDING with "<<pointer<<endl;
-            for(int i = 1 ; i<sizeofKey ; i++)
-            {
-                cout<<answer[i]<<"\t";
-            }
-            cout<<endl;
-            break;
-        }
+		
+		else{}
+		
+		//Printing Top
+		cout<<"INTERMEDIATE"<<endl;
+		for(int i = 0 ; i<sizeofKey ; i++)
+		{
+			cout<<top[i]<<"\t";
+		}
+		cout<<endl;
     }
+	
+	cout<<endl;
+	
+	//Printing Top
+    cout<<"OUTPUT"<<endl;
+    for(int i = 1 ; i<sizeofKey ; i++)
+    {
+        cout<<answer[i]<<"\t";
+    }
+    cout<<endl;
 }
 
 void sender()
