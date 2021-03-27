@@ -1,7 +1,9 @@
 #include<iostream>
 using namespace std;
 
-void modulo2(int dataArray[],int keyArray[],int sizeofdata,int absoluteSize,int sizeofKey)
+int remainder[100];		//Used to store remainder bits 
+
+void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
 {
     int pointer = sizeofKey;
     int N = sizeofKey;
@@ -111,21 +113,21 @@ void modulo2(int dataArray[],int keyArray[],int sizeofdata,int absoluteSize,int 
     }
 
 
-	//Till here we have remainder that needs to be appended
-	for(int i = sizeofdata,k = 1 ; i<absoluteSize ; i++,k++)
-	{
-		dataArray[i] = answer[k];
-	}
 
-
-    //==========OUTPUT===============
-	cout<<"Remainder Generated : "<<endl;
-	for(int i = 1  ; i<sizeofKey ; i++)
+	//We have our remainder in answer[] array till here. Fill those values in remainder[] array for sender()/receiver() to use
+	for(int i = 1 ; i<sizeofKey ; i++)
 	{
-		cout<<answer[i]<<"\t";
+		remainder[i-1] = answer[i];
 	}
-	cout<<endl;
-	cout<<endl;
+	
+	
+	
+    //==========OUTPUT (In Modulo)===============
+	cout<<endl<<"Remainder Generated : In Modulo"<<endl;
+	for(int i = 0  ; i<sizeofKey-1 ; i++)
+	{
+		cout<<remainder[i]<<"\t";
+	}
 }
 
 void sender()
@@ -170,37 +172,46 @@ void sender()
     }
 
 
-    //STEP 3 : Perform Modulo 2 Division
-    modulo2(dataArray,keyArray,sizeofdata,absoluteSize,sizeofKey);
+    //STEP 3 : Perform Modulo 2 Division and Store remainder in Global Array
+    modulo2(dataArray,keyArray,absoluteSize,sizeofKey);
 
 
+	//Till here we have remainder that needs to be appended at the end of data
+	for(int i = sizeofdata,k = 0 ; i<absoluteSize ; i++,k++)
+	{
+		dataArray[i] = remainder[k];
+	}
 
-    //=======================OUTPUT=======================
-    cout<<endl;
-    cout<<"Key : "<<endl;
+
+    //=======================OUTPUT (In Sender)=======================
+    cout<<endl<<endl;
+	
+	cout<<"=== Sender ==="<<endl;
+	
+    cout<<"Key : ";
     for(int i = 0 ; i<sizeofKey ; i++)
     {
         cout<<keyArray[i]<<"\t";
     }
 
-    cout<<endl;
-    cout<<endl;
+    cout<<endl<<endl;
 
-    cout<<"Data : "<<endl;
+    cout<<"Data : ";
     for(int i = 0 ; i<absoluteSize ; i++)
     {
         cout<<dataArray[i]<<"\t";
     }
-
-
 }
 
 int main()
 {
 
-    sender();
+    //sender();
 
-
+	//TESTING
+	int cw[8] = {1,0,1,1,0,1,1,0};
+	int k[4]  = {1,1,0,1};
+	modulo2(cw,k,8,4);
 
 
     return 0;
