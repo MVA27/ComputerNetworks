@@ -203,16 +203,59 @@ void sender()
     }
 }
 
+void receiver()
+{
+	int sizeofKey,sizeofCodeword;
+	
+	//Take in the Key
+	cout<<endl<<"Enter The Size of Key :";
+	cin>>sizeofKey;
+	
+	int keyArray[sizeofKey];
+	cout<<endl<<"Enter The Key : ";
+	for(int i=0; i<sizeofKey ; i++)
+	{
+		cin>>keyArray[i];
+	}
+	
+	
+	//Take in the Codeword
+	cout<<endl<<"Enter The Size of Codeword : ";
+	cin>>sizeofCodeword;
+	
+	int codewordArray[sizeofCodeword];
+	cout<<endl<<"Enter The Codeword : ";
+	for(int i=0; i<sizeofCodeword ; i++)
+	{
+		cin>>codewordArray[i];
+	}
+	
+	
+	//Perform modulo 2 division
+	modulo2(codewordArray,keyArray,sizeofCodeword,sizeofKey);
+	
+	//if sizeofKey - 1 bits are 0 then the data received if correct 
+	bool foundNonZero = false;
+	for(int i=0; i<sizeofKey-1 ; i++)
+	{
+		if(remainder[i] == 1){
+			foundNonZero = true;
+			break;
+		}
+	}
+	
+	if(foundNonZero == true)
+		cout<<endl<<"Data Received is invalid"<<endl;
+	
+	else
+		cout<<endl<<"Data Received is valid"<<endl;
+}
+
 int main()
 {
 
-    //sender();
-
-	//TESTING
-	int cw[8] = {1,0,1,1,0,1,1,0};
-	int k[4]  = {1,1,0,1};
-	modulo2(cw,k,8,4);
-
+    sender();
+	receiver();
 
     return 0;
 }
