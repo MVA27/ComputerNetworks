@@ -1,21 +1,42 @@
 #include<iostream>
 using namespace std;
 
-void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
+void modulo2(int dataArray[],int keyArray[],int sizeofdata,int absoluteSize,int sizeofKey)
 {
     int pointer = sizeofKey;
     int N = sizeofKey;
 
-    cout<<pointer<<endl;
 
-    //Create 2 arrays to perform XOR
+    //STEP 1 : Create 2 arrays to perform XOR
     int top[N],bottom[N],answer[N];
 
-    //In top[] load first N data bits
+    //STEP 2 : In top[] load first N data bits
     for(int i = 0 ; i<sizeofKey ; i++)
     {
         top[i] = dataArray[i];
     }
+
+	/*
+	STEP 3 : Check first bit of top[] and determine values of bottom[] arrays
+		IF fist bit == 1
+			- put value of keyArray[] in bottom[]
+
+		ELSE
+			- put all zeros
+	*/
+
+	//STEP 4 : Perform bit by bit XOR and store the value in answer[] array
+
+	/*
+	STEP 5 : Discard MSB of whatever answer you get. i.e IGNORE the value of answer[0]
+		i.e Load only answer[1] to answer[N-1] bits back into top[] array
+	*/
+
+	//SETP 6 : Add next bit (i.e where pointer is pointing) at LSB of top[] array
+
+	//STEP 7 : Continue in loop until pointer goes out of absoluteSize. if pointer = absoluteSize, that means pointer is pointing out of array
+
+	//STEP 8 : After getting the remainder replace the redundant bits of dataArray to bits present in answer[];
 
     while(1)
     {
@@ -32,9 +53,7 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
             for(int i = 0 ; i<sizeofKey ; i++)
             {
                 answer[i] = top[i] ^ bottom[i];
-				cout<<answer[i]<<"\t";
             }
-			cout<<endl;
 
             //MSB of answer is IGNORED. THEREFORE DONT CONSIDER 0th bit of answer[]
             //load the answer in top[]
@@ -46,11 +65,11 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
 
 			if(pointer == absoluteSize)
 				break;
-			
+
 
             //Finally add next bit in last bit of top[]
 			top[sizeofKey-1] = dataArray[pointer];
-			pointer++;				
+			pointer++;
         }
 
         else if(top[0] == 0)
@@ -65,9 +84,7 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
             for(int i = 0 ; i<sizeofKey ; i++)
             {
                 answer[i] = top[i] ^ bottom[i];
-				cout<<answer[i]<<"\t";
             }
-			cout<<endl;
 
             //MSB of answer is IGNORED. THEREFORE DONT CONSIDER 0th bit of answer[]
             //load the answer in top[]
@@ -79,33 +96,36 @@ void modulo2(int dataArray[],int keyArray[],int absoluteSize,int sizeofKey)
 
 			if(pointer == absoluteSize)
 				break;
-			
+
 
             //Finally add next bit in last bit of top[]
 			top[sizeofKey-1] = dataArray[pointer];
-			pointer++;				
+			pointer++;
         }
-		
-		else{}
-		
-		//Printing Top
-		cout<<"INTERMEDIATE"<<endl;
-		for(int i = 0 ; i<sizeofKey ; i++)
-		{
-			cout<<top[i]<<"\t";
-		}
-		cout<<endl;
+
+		else
+            {
+                cout<<"EXCEPTION : bits in the array are neither 1 nor 0 ";
+                return;
+            }
     }
-	
+
+
+	//Till here we have remainder that needs to be appended
+	for(int i = sizeofdata,k = 1 ; i<absoluteSize ; i++,k++)
+	{
+		dataArray[i] = answer[k];
+	}
+
+
+    //==========OUTPUT===============
+	cout<<"Remainder Generated : "<<endl;
+	for(int i = 1  ; i<sizeofKey ; i++)
+	{
+		cout<<answer[i]<<"\t";
+	}
 	cout<<endl;
-	
-	//Printing Top
-    cout<<"OUTPUT"<<endl;
-    for(int i = 1 ; i<sizeofKey ; i++)
-    {
-        cout<<answer[i]<<"\t";
-    }
-    cout<<endl;
+	cout<<endl;
 }
 
 void sender()
@@ -150,12 +170,12 @@ void sender()
     }
 
 
-    //Perform Division
-    modulo2(dataArray,keyArray,absoluteSize,sizeofKey);
+    //STEP 3 : Perform Modulo 2 Division
+    modulo2(dataArray,keyArray,sizeofdata,absoluteSize,sizeofKey);
 
 
 
-    //OUTPUT
+    //=======================OUTPUT=======================
     cout<<endl;
     cout<<"Key : "<<endl;
     for(int i = 0 ; i<sizeofKey ; i++)
@@ -179,6 +199,8 @@ int main()
 {
 
     sender();
+
+
 
 
     return 0;
