@@ -88,21 +88,26 @@ void sender()
 	
 	
 	//=============PHASE 3=================
-	for(int i = 0 ; i< finalSize ; i++)	
+	//Select alternative bits
+	for(int i = 0 ; i< finalSize ; i++)	//Traverse Each Bit One by One
 	{
 		int executeTill;
-		if(codeword[i] < 0)
+		if(codeword[i] < 0)	//If The Bit is -ve That Means its Redundant bit and its mod/abs value gives how many bits to consider and skip
 		{
 			executeTill =  abs(codeword[i]);
 			cout<<endl<<"-ve value found : "<<codeword[i]<<endl;
 		}
 		
-		int pointer = i,counter = 0;
+		else	//If its not -ve that means its data bit and skip the iteration
+			continue;
+		
+		int pointer = i; //var pointer points to -ve bit in codeword[]
+		int counter = 0; //var counter to increment uptil var executeTill
 		
 		while(pointer < finalSize)
 		{
-			//Execute till a particular value
-			for(pointer ; counter < executeTill ; pointer++)
+			//start from current bit and consider next bits upto executeTill and till pointer is not pointing outside codeword[]
+			for(pointer ; counter < executeTill && pointer < finalSize ; pointer++) 
 			{
 				
 				cout<<endl<<"conside : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
@@ -111,11 +116,11 @@ void sender()
 			counter = 0;
 			cout<<endl;
 			
-			//Skip bits till a particular value
-			for(pointer ; counter < executeTill ; pointer++)
+			//start from current bit and skip next bits upto executeTill and till pointer is not pointing outside codeword[]
+			for(pointer ; counter < executeTill && pointer < finalSize ; pointer++)
 			{
 				
-				cout<<endl<<"skip : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
+				//cout<<endl<<"skip : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
 				counter++;
 			}
 			counter = 0;	
