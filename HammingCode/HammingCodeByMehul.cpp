@@ -79,7 +79,7 @@ void sender()
 	}
 	cout<<endl;
 
-	cout<<"Code word : ";
+	cout<<"Intermediate Code word : "<<endl;
 	for(int i = 0 ; i< finalSize ; i++)	
 	{
 		cout<<codeword[i]<<"\t";
@@ -88,10 +88,14 @@ void sender()
 	
 	
 	//=============PHASE 3=================
-	//Select alternative bits
+	/* 	
+		1. Select alternative bits 
+		2. Count no. of 1s
+		3. manuplate ith bit in codeword[]
+	*/
 	for(int i = 0 ; i< finalSize ; i++)	//Traverse Each Bit One by One
 	{
-		int executeTill;
+		int executeTill,numberOfOnes = 0;
 		if(codeword[i] < 0)	//If The Bit is -ve That Means its Redundant bit and its mod/abs value gives how many bits to consider and skip
 		{
 			executeTill =  abs(codeword[i]);
@@ -111,6 +115,12 @@ void sender()
 			{
 				
 				cout<<endl<<"conside : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
+				
+				if(codeword[pointer] == 1){
+					numberOfOnes++;
+				}
+				
+				
 				counter++;
 			}		
 			counter = 0;
@@ -125,9 +135,27 @@ void sender()
 			}
 			counter = 0;	
 			cout<<endl;
-		
 		}		
+	
+		if(numberOfOnes % 2 == 0)//Even number of 1s exists. Therefore put 0 to keep it Even
+		{
+			codeword[i] = 0;
+		}
+		
+		else	//Odd number of 1s exists. Therefore put 1 to make it Even
+		{
+			codeword[i] = 1;
+		}
 	}
+
+	//=============PHASE 4=================
+	//Final codeword[] is 
+	cout<<"Final Code word : "<<endl;
+	for(int i = 0 ; i< finalSize ; i++)
+	{
+		cout<<codeword[i]<<"\t";
+	}
+	cout<<endl;
 }
 
 int main()
