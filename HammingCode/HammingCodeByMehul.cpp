@@ -1,5 +1,6 @@
 #include<iostream>
-#include<math.h>
+#include<math.h>	// For pow()
+#include<cstdlib>	// For abs()
 using namespace std;
 
 void sender()
@@ -70,7 +71,7 @@ void sender()
 	int pointer = 0; //pointer to dataArray to extract every bit one by one
 	for(int i = 0 ; i< finalSize ; i++)	
 	{
-		if(codeword[i] >= 0) //Means bit is +ve and is not a parity bit. Therefore inser user bit
+		if(codeword[i] >= 0) //Means bit is +ve and is not a parity bit. Therefore insert user bit
 		{
 			codeword[i] = dataArray[pointer];
 			pointer++;
@@ -87,6 +88,41 @@ void sender()
 	
 	
 	//=============PHASE 3=================
+	for(int i = 0 ; i< finalSize ; i++)	
+	{
+		int executeTill;
+		if(codeword[i] < 0)
+		{
+			executeTill =  abs(codeword[i]);
+			cout<<endl<<"-ve value found : "<<codeword[i]<<endl;
+		}
+		
+		int pointer = i,counter = 0;
+		
+		while(pointer < finalSize)
+		{
+			//Execute till a particular value
+			for(pointer ; counter < executeTill ; pointer++)
+			{
+				
+				cout<<endl<<"conside : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
+				counter++;
+			}		
+			counter = 0;
+			cout<<endl;
+			
+			//Skip bits till a particular value
+			for(pointer ; counter < executeTill ; pointer++)
+			{
+				
+				cout<<endl<<"skip : "<<codeword[pointer]<<"at index = "<<pointer+1<<"\t";
+				counter++;
+			}
+			counter = 0;	
+			cout<<endl;
+		
+		}		
+	}
 }
 
 int main()
