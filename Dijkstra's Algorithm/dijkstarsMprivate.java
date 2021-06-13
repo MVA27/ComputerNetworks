@@ -325,6 +325,7 @@ class Test
 						s = new Scanner(System.in);
 						input = s.nextInt();
 						distance[i][j] = input;
+						distance[j][i] = input; //related to second line of current loop
 						
 						System.out.println();
 					}
