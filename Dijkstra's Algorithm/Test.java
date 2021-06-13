@@ -40,7 +40,7 @@ class Node
 	
 }
 
-class Hello
+class Test
 {
 	static Node currentMinimum = null;											  // Points to smallest vlaue object to track columns
 	static Node smallest = null;												 // Points to smallest vlaue object to track rows
@@ -74,7 +74,6 @@ class Hello
 			}
 			System.out.println();
 		}
-		
 		System.out.println();
 	}
 	
@@ -107,10 +106,7 @@ class Hello
 				
 				else
 					nodeMatrix[i][j] = new Node(j);
-				
-				System.out.print(nodeMatrix[i][j]+"\t");
 			}
-			System.out.println();
 		}
 		
 	}
@@ -128,7 +124,6 @@ class Hello
 		
 		// set the currentNode.columnNumber = sourceRowIndex (currentMinimum.ColumnValue)
 		currentNode.columnName =  (char) (65 + sourceRowIndex);
-		System.out.println("weight "+weight);
 		
 		if(weight + currentMinimum.value < topNode.value){
 			currentNode.value = weight + smallest.value;
@@ -180,15 +175,8 @@ class Hello
 		
 		for(int i = 1 ; i < nodeMatrix.length ; i++){
 			
-			
-			
-			System.out.println("For i = "+i);
-			
 			//Find Shortest element of previous row and cut the column
 			smallest = setSmallest(nodeMatrix,i-1);
-			
-			System.out.println("small for i = "+smallest);
-			
 			
 			for(int j = 0 ; j < nodeMatrix[i].length ; j++){
 				
@@ -199,13 +187,10 @@ class Hello
 				}
 				
 				if(ignoreColumnList.contains(j)){	//ignore cloumn
-					System.out.println("ignoring column = "+j);
 					continue;
 				}
 				
-				try{
-					System.out.println("rel "+currentMinimum.columnValue+" "+j);
-					
+				try{					
 					//If an edge/relation exists find minimum
 					if(relation[currentMinimum.columnValue][j] == 1){
 						
@@ -226,15 +211,8 @@ class Hello
 				}
 				
 			}
-			
-			//smallest = setSmallest(nodeMatrix,i-1);
-			//printMatrix(nodeMatrix);
-			System.out.println();
 		}
-		System.out.println("Smallest = "+smallest);
-		System.out.println("Ignore List = "+ignoreColumnList);
-
-		printMatrix(nodeMatrix);
+		
 	}
 	
 	//set isFinal to true
@@ -284,9 +262,6 @@ class Hello
 		dest = dest - 65;
 		tempDest = dest;
 		
-		//System.out.println(src);
-		//System.out.println(dest);
-		
 		//Go to each column and find nodes having isFinal=true
 		//Do this until src=dest and stop
 		OUTER:while(true)								// For all row traversal
@@ -324,25 +299,77 @@ class Hello
 	
 	public static void main(String[] args){
 		
+		//Take Number of nodes 
+		int length = getLength();	
 		
-		int length = 8;
+		//Store all node values as character
+		char[] nodeArray = new char[length];
 		
+		//Display number of nodes created
+		displayTotalNodesCreated(length,nodeArray);
 		
+		/*
+		//Take cost/weight as input
+		relation = new int[length][length];
+		distance = new int[length][length];
 		
+		for(int i = 0 ; i<relation.length ; i++){
+			
+			char rowChar = (char) (65 + i);
+			System.out.println("Enter the data for node "+rowChar+": ");
+			
+			for(int j = 0 ; j<relation[i].length ; j++){
+				
+				char colChar = 65;
+				
+				if(relation[i][j] == 1)
+					continue;
+				
+				if(i == j){	//E.g : Relation between A to A always exists, distance is always 0
+					relation[i][j] = 1;
+					distance[i][j] = 0;
+				}
+				
+				else{
+					System.out.print("Enter '1' if there is an edge from  "+rowChar+"->"+((char)(colChar+j))+" Else enter '0' : ");
+					Scanner s = new Scanner(System.in);
+					int input = s.nextInt();
+					System.out.println();
+					
+					if(input == 1){
+						
+						relation[i][j] = 1;
+						relation[j][i] = 1;	//To redure redundant inputs (if rowA & colB = 1 then set colA & rowB = 1 as well)
+						
+						System.out.print("Enter the cost to go from "+rowChar+"->"+((char)(colChar+j))+" : ");
+						s = new Scanner(System.in);
+						input = s.nextInt();
+						distance[i][j] = input;
+						
+						System.out.println();
+					}
+				}
+				
+			}
+		}
+		
+		*/
 		/*
 			1 extra row added which is reserved for initial values
 			1 extra column added which is unwanted and exists to make the matrix square which then 
 				avoids Runtime exception in finalFilter() method {where i and j are swapped}
 		*/
+		
+		printMatrix(relation);
+		printMatrix(distance);
+		
+		
 		Node[][] nodeMatrix = new Node[length+1][length+1];
 		
 		
 		
-		printMatrix(relation);
-		
-		printMatrix(distance);
-		
-		
+		//Source node
+		char sourceChar = getSourceChar(); 
 		
 		/*
 			Initialize the matrix
@@ -351,7 +378,7 @@ class Hello
 			
 			At the same time, Other attributs like columnName might be set
 		*/
-		initMatrix(nodeMatrix,'A');
+		initMatrix(nodeMatrix,sourceChar);
 		
 		/*
 			Perform core functionality
@@ -365,6 +392,8 @@ class Hello
 		*/
 		core(nodeMatrix);
 		
+		printMatrix(nodeMatrix);
+		
 		/*
 			After core part is done this method identifies the minimum value in a 'column'
 			and sets its isFinal value to be true 
@@ -375,14 +404,39 @@ class Hello
 			Up till here the matrix is ready
 			Last part is traversing the matrix and identify all the nodes with isFinal=true 
 		*/
-		trace(nodeMatrix,"AB");
-		trace(nodeMatrix,"AC");
-		trace(nodeMatrix,"AD");
-		trace(nodeMatrix,"AE");
-		trace(nodeMatrix,"AF");
-		trace(nodeMatrix,"AG");
-		trace(nodeMatrix,"AH");
-		
+		for(int i = 0 ; i < nodeArray.length ; i++){
+			
+			if(sourceChar != nodeArray[i]){
+				trace(nodeMatrix,sourceChar+""+nodeArray[i]);
+			}
+			
+		}
+	}
+
+	public static int getLength(){
+		Scanner s = new Scanner(System.in);
+		System.out.print("Enter Number of Nodes : ");
+		int length = s.nextInt();
+		System.out.println();
+		return length;
+	}
+	
+	public static char getSourceChar(){
+		Scanner s = new Scanner(System.in);
+		System.out.print("Enter The Source Node : ");
+		char ch = s.next().charAt(0);
+		System.out.println();
+		return ch;
+	}
+
+	public static void displayTotalNodesCreated(int length,char[] nodeArray){
+		char character = 65 ;	//UNICODE of A
+		System.out.println("Nodes created are : ");
+		for(int i=0; i<length ; i++){
+			nodeArray[i] = (char)(character+i);
+			System.out.print(nodeArray[i]+"\t");
+		}
+		System.out.println();
 	}
 }
 
