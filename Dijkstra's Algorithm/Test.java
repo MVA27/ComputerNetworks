@@ -66,29 +66,6 @@ class Test
 								{0,0,0,2,0,2,4,0}};//H
 	
 	
-	public static void printMatrix(Node[][] nodeMatrix){
-		
-		for(Node[] n : nodeMatrix){
-			for(Node eachNode : n){
-				System.out.print(eachNode+"\t");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-	
-	public static void printMatrix(int[][] nodeMatrix){
-		
-		for(int[] n : nodeMatrix){
-			for(int eachNode : n){
-				System.out.print(eachNode+"\t");
-			}
-			System.out.println();
-		}
-		
-		System.out.println();
-	}
-	
 	/*
 		Initialize all cells of matrix with object
 		Initialize source object with value 0
@@ -253,6 +230,8 @@ class Test
 		int dest = input.charAt(1);
 		int tempDest = input.charAt(1);	//Just to check if the row wise traversel is of 'dest' column (helps to determine cost)
 		
+		System.out.print(((char)src)+"\t"+(char)dest+"\t");
+		
 		//Add the destination already and add weight/cost 
 		String path = ""+(char)dest;
 		int cost = 0;
@@ -287,14 +266,15 @@ class Test
 		}
 		
 		//Tracing starts from reverse. therefore reverse the path String
+		System.out.print(cost+"\t");
+		
 		for(int i = path.length()-1 ; i>=0 ; i--){
 			
 			System.out.print(path.charAt(i));
 			if(i != 0) 
 				System.out.print("->");
 		}
-		
-		System.out.println("\tcost = "+cost);
+		System.out.println();
 	}
 	
 	public static void main(String[] args){
@@ -360,10 +340,6 @@ class Test
 				avoids Runtime exception in finalFilter() method {where i and j are swapped}
 		*/
 		
-		printMatrix(relation);
-		printMatrix(distance);
-		
-		
 		Node[][] nodeMatrix = new Node[length+1][length+1];
 		
 		
@@ -392,8 +368,6 @@ class Test
 		*/
 		core(nodeMatrix);
 		
-		printMatrix(nodeMatrix);
-		
 		/*
 			After core part is done this method identifies the minimum value in a 'column'
 			and sets its isFinal value to be true 
@@ -404,6 +378,7 @@ class Test
 			Up till here the matrix is ready
 			Last part is traversing the matrix and identify all the nodes with isFinal=true 
 		*/
+		System.out.println("SRC\tDEST\tCOST\tPATH");
 		for(int i = 0 ; i < nodeArray.length ; i++){
 			
 			if(sourceChar != nodeArray[i]){
