@@ -262,6 +262,7 @@ class Test
 						s = new Scanner(System.in);
 						input = s.nextInt();
 						distance[i][j] = input;
+						distance[j][i] = input;
 						
 						System.out.println();
 					}
